@@ -6,22 +6,22 @@ import java.util.UUID;
 public class CategoryFactory {
     private static final Faker faker = new Faker();
 
-    public static CategoryDto create(String name, CategoryDto parent) {
-        return new CategoryDto(name, parent);
+    public static CategoryDTO create(String name, CategoryDTO parent) {
+        return new CategoryDTO(name, parent);
     }
 
-    public static CategoryDto createWithRandomName(CategoryDto parent) {
+    public static CategoryDTO createWithRandomName(CategoryDTO parent) {
         String randomName = faker.book().genre() +"_"+ UUID.randomUUID();
-        return new CategoryDto(randomName, parent);
+        return new CategoryDTO(randomName, parent);
     }
 
-    public static CategoryDto createWithoutName() {
-        return new CategoryDto("", null);
+    public static CategoryDTO createWithoutName() {
+        return new CategoryDTO("", null);
     }
 
-    public static CategoryDto createWithInvalidParent() {
-        CategoryDto invalidParent = new CategoryDto();
+    public static CategoryDTO createWithInvalidParent() {
+        CategoryDTO invalidParent = new CategoryDTO();
         invalidParent.setId(999999L);
-        return new CategoryDto("Invalid Parent", invalidParent);
+        return new CategoryDTO("Invalid Parent", invalidParent);
     }
 }

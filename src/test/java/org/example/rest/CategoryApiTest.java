@@ -2,9 +2,7 @@ package org.example.rest;
 
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
-import org.example.rest.category.CategoryApiFacade;
-import org.example.rest.category.CategoryDto;
-import org.example.rest.category.CategoryFactory;
+import org.example.rest.category.*;
 import org.junit.jupiter.api.*;
 
 import java.io.InputStream;
@@ -19,14 +17,14 @@ import static org.hamcrest.Matchers.nullValue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoryApiTest {
 
-    private static CategoryDto parent;
+    private static CategoryDTO parent;
     private static Long parentId;
     private static Long childId;
     private final List<Long> createdCategoryIds = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
-        CategoryDto parent = CategoryFactory.createWithRandomName(null);
+        CategoryDTO parent = CategoryFactory.createWithRandomName(null);
         Response response = CategoryApiFacade.create(parent);
         response.then().statusCode(201);
         parentId = ((Number) response.path("id")).longValue();
@@ -43,7 +41,7 @@ public class CategoryApiTest {
     @Test
     public void createParentCategory() {
         String name = "newCategory" + System.currentTimeMillis();
-        CategoryDto newParent = CategoryDto.builder().name(name).build();
+        CategoryDTO newParent = CategoryDTO.builder().name(name).build();
         CategoryApiFacade.create(newParent)
                 .then().statusCode(201)
                 .body("name", equalTo(newParent.getName()))
@@ -55,14 +53,14 @@ public class CategoryApiTest {
         long currented = System.currentTimeMillis();
         String pName = "Fasntasy " + currented;
         String sName = "Dark Fantasy " + currented;
-        CategoryDto pCategory = CategoryApiFacade.createCategoryByRest(
-                CategoryDto
+        CategoryDTO pCategory = CategoryApiFacade.createCategoryByRest(
+                CategoryDTO
                         .builder()
                         .name(pName)
                         .build()
         );
 
-        CategoryDto build = CategoryDto.builder().name(sName).parentCategory(pCategory).build();
+        CategoryDTO build = CategoryDTO.builder().name(sName).parentCategory(pCategory).build();
 
         Response sCategory = CategoryApiFacade.create(build)
                 .then()
@@ -109,8 +107,8 @@ public class CategoryApiTest {
 
     @Test
     public void get() {
-        CategoryDto withRandomName = CategoryFactory.createWithRandomName(null);
-        CategoryDto categoryByRest = CategoryApiFacade.createCategoryByRest(withRandomName);
+        CategoryDTO withRandomName = CategoryFactory.createWithRandomName(null);
+        CategoryDTO categoryByRest = CategoryApiFacade.createCategoryByRest(withRandomName);
         System.out.println(categoryByRest.getName());
     }
 }
