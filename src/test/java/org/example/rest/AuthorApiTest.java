@@ -1,15 +1,19 @@
 package org.example.rest;
 
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.example.rest.author.AuthorApiFacade;
 import org.example.rest.author.AuthorDTO;
 import org.example.rest.author.AuthorFactory;
+import org.example.rest.category.CategoryApiFacade;
 import org.junit.jupiter.api.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -88,5 +92,33 @@ public class AuthorApiTest {
         Response resp = AuthorApiFacade.delete(author.getId());
         resp.then().statusCode(204);
         resp.prettyPrint();
+    }
+
+    @Test
+    public void shouldMatchJsonSchema() {
+        InputStream schemaStream = getClass().getClassLoader()
+                .getResourceAsStream("schemas/author-schema.json");
+        if (schemaStream == null) {
+            throw new RuntimeException("Nie znaleziono pliku schematu JSON.");
+        }
+        Response response = AuthorApiFacade.getById(createdAuthorIds.getFirst());
+        response.then()
+                .assertThat()
+                .body(JsonSchemaValidator.matchesJsonSchema(schemaStream));
+    }
+
+    @Test
+    public void shouldMatchListSchema() {
+        InputStream schemaStream = getClass().getClassLoader()
+                .getResourceAsStream("schemas/author-list-schema.json");
+
+        if (schemaStream == null) {
+            throw new RuntimeException("Nie znaleziono schematu JSON listy kategorii.");
+        }
+
+        Response response = AuthorApiFacade.getAll();
+        response.then().statusCode(200);
+
+        assertThat(response.asString(), JsonSchemaValidator.matchesJsonSchema(schemaStream));
     }
 }

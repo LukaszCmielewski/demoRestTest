@@ -1,4 +1,4 @@
-package org.example.rest.category;
+package org.example.rest.member;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -9,15 +9,15 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class CategoryApiFacade {
-
+public class MemberApiFacade {
     static {
-        RestAssured.baseURI = "http://localhost:8080/api/category";
+        RestAssured.baseURI = "http://localhost:8080/api/member";
     }
 
-    public static Response create(CategoryDTO dto) {
+    public static Response create(MemberDTO dto) {
         return given()
                 .contentType(ContentType.JSON)
+                .accept("*/*")
                 .body(dto)
                 .when()
                 .post();
@@ -26,10 +26,10 @@ public class CategoryApiFacade {
     public static Response getById(Long id) {
         return given()
                 .when()
-                .get("/{id}", id).then().statusCode(200).extract().response();
+                .get("/{id}", id).then().extract().response();
     }
 
-    public static Response update(Long id, CategoryDTO dto) {
+    public static Response update(Long id, MemberDTO dto) {
         return given()
                 .contentType(ContentType.JSON)
                 .body(dto)
@@ -49,8 +49,8 @@ public class CategoryApiFacade {
                 .get("").then().statusCode(200).extract().response();
     }
 
-    public static void cleanAllCategories() {
-        Response response = CategoryApiFacade.getAll();
+    public static void cleanAll() {
+        Response response = MemberApiFacade.getAll();
         response.then().statusCode(200);
 
         List<Integer> ids = response.jsonPath().getList("id");
@@ -59,17 +59,17 @@ public class CategoryApiFacade {
             for (int i = ids.size() - 1; i >= 0; i--) {
                 Integer idInt = ids.get(i);
                 Long id = idInt.longValue();
-                CategoryApiFacade.delete(id).then().statusCode(204);
+                MemberApiFacade.delete(id).then().statusCode(204);
             }
         }
     }
 
-    public static CategoryDTO createCategoryByRest(CategoryDTO category) {
+    public static MemberDTO createByRest(MemberDTO dto) {
         Response response = given().contentType(ContentType.JSON)
-                .body(category)
+                .body(dto)
                 .when()
                 .post().then().statusCode(201).extract().response();
         response.prettyPrint();
-        return JsonUtils.fromJson(response.getBody().asString(), CategoryDTO.class);
+        return JsonUtils.fromJson(response.getBody().asString(), MemberDTO.class);
     }
 }

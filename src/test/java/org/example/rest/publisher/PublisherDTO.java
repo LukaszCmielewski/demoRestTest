@@ -1,4 +1,4 @@
-package org.example.rest.author;
+package org.example.rest.publisher;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,16 +10,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorDTO {
+public class PublisherDTO {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String biography;
-    AuthorDTO(String firstName, String lastName, String biography){
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.biography=biography;
+    private String name;
+    private String address;
+    private String contactInfo;
+
+    PublisherDTO(String name, String address, String contactInfo) {
+        this.name=name;
+        this.address=address;
+        this.contactInfo=contactInfo;
     }
+
     public String prettyPrint() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

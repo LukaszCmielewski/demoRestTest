@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BookList",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "title": {
+        "type": "string"
+      },
+      "isbn": {
+        "type": "string",
+        "pattern": "^(\\d{9}[\\dX]|\\d{13})$"
+      },
+      "publicationYear": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 9999
+      },
+      "edition": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "coverImageUrl": {
+        "type": "string",
+        "format": "uri"
+      },
+      "language": {
+        "type": "string"
+      },
+      "publisher": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "contactInfo": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name", "address", "contactInfo"],
+        "additionalProperties": false
+      },
+      "authors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "biography": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "firstName", "lastName", "biography"],
+          "additionalProperties": false
+        }
+      },
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "parentCategory": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "name", "parentCategory"],
+          "additionalProperties": false
+        }
+      },
+      "available": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "id", "title", "isbn", "publicationYear", "edition",
+      "summary", "coverImageUrl", "language", "publisher",
+      "authors", "categories", "available"
+    ],
+    "additionalProperties": false
+  }
+}

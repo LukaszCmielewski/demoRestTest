@@ -17,7 +17,7 @@ public class AuthorApiFacade {
     public static Response create(AuthorDTO dto) {
         return given()
                 .contentType(ContentType.JSON)
-                .body(JsonUtils.toJson(dto))
+                .body(dto)
                 .when()
                 .post();
     }
@@ -31,7 +31,7 @@ public class AuthorApiFacade {
     public static Response update(Long id, AuthorDTO dto) {
         return given()
                 .contentType(ContentType.JSON)
-                .body(JsonUtils.toJson(dto))
+                .body(dto)
                 .when()
                 .put("/{id}", id);
     }
@@ -63,9 +63,9 @@ public class AuthorApiFacade {
         }
     }
 
-    public static AuthorDTO createAuthorByRest(AuthorDTO category) {
+    public static AuthorDTO createAuthorByRest(AuthorDTO author) {
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonUtils.toJson(category))
+                .body(author)
                 .when()
                 .post().then().statusCode(201).extract().response();
         response.prettyPrint();
