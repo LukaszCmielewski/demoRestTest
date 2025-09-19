@@ -7,17 +7,14 @@ import io.restassured.response.Response;
 import org.example.rest.publisher.PublisherApiFacade;
 import org.example.rest.publisher.PublisherDTO;
 import org.example.rest.publisher.PublisherFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
+//@Disabled
 public class PublisherApiTest {
     private final List<Long> createdPublisherIds = new ArrayList<>();
     private static Long publisherID;
@@ -29,12 +26,13 @@ public class PublisherApiTest {
 
     @BeforeEach
     public void setup() {
-        PublisherDTO autor = PublisherFactory.createRandomPublisher();
-        System.out.println("DTO: "+autor.prettyPrint());
-        Response response = PublisherApiFacade.create(autor);
+        PublisherDTO publisherDto = PublisherFactory.createRandomPublisher();
+        System.out.println("PublisherDTO: "+publisherDto.prettyPrint());
+        Response response = PublisherApiFacade.create(publisherDto);
         System.out.println(response.asString());
         response.then().statusCode(201);
         publisher = response.as(PublisherDTO.class);
+        System.out.println("Publisher response: "+publisher);
         publisherID = ((Number) response.path("id")).longValue();
         createdPublisherIds.add(publisherID);
         response.body().prettyPrint();
@@ -91,9 +89,10 @@ public class PublisherApiTest {
         long currentTime=System.currentTimeMillis();
         PublisherDTO newPublisher= PublisherDTO.builder()
                 .name(publisher.getName()+currentTime)
-                .address(publisher.getAddress()+currentTime)
-                .contactInfo(publisher.getContactInfo()+currentTime)
+                .address(publisher.getAddress())
+                .contactInfo(publisher.getContactInfo())
                 .build();
+        System.out.println("Create publisher: "+ newPublisher);
         Response response = PublisherApiFacade.create(newPublisher);
         response.then().statusCode(201);
         response.prettyPrint();
@@ -104,7 +103,7 @@ public class PublisherApiTest {
 
     @Test
     public void update(){
-        System.out.println(publisher.prettyPrint());
+        System.out.println("Update publisher"+publisher.prettyPrint());
         PublisherDTO newPublisher= PublisherDTO.builder()
                 .name(publisher.getName()+"_UPDATED")
                 .address(publisher.getAddress()+"_UPDATED")

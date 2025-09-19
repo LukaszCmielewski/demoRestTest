@@ -3,8 +3,6 @@ package org.example.rest.publisher;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.example.rest.author.AuthorApiFacade;
-import org.example.rest.author.AuthorDTO;
 import org.example.rest.util.JsonUtils;
 
 import java.util.List;
@@ -66,12 +64,12 @@ public class PublisherApiFacade {
         }
     }
 
-    public static PublisherDTO createAuthorByRest(PublisherDTO publisher) {
+    public static PublisherDTO createByRest(PublisherDTO publisher) {
         Response response = given().contentType(ContentType.JSON)
                 .body(publisher)
                 .when()
                 .post().then().statusCode(201).extract().response();
-        response.prettyPrint();
+        System.out.println("Publisher: "+ response.prettyPrint());
         return JsonUtils.fromJson(response.getBody().asString(), PublisherDTO.class);
     }
 }

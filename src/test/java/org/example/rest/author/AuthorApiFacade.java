@@ -63,12 +63,12 @@ public class AuthorApiFacade {
         }
     }
 
-    public static AuthorDTO createAuthorByRest(AuthorDTO author) {
+    public static AuthorDTO createByRest(AuthorDTO author) {
         Response response = given().contentType(ContentType.JSON)
                 .body(author)
                 .when()
                 .post().then().statusCode(201).extract().response();
-        response.prettyPrint();
+        System.out.println("Author: "+ response.prettyPrint());
         return JsonUtils.fromJson(response.getBody().asString(), AuthorDTO.class);
     }
 }
