@@ -64,12 +64,12 @@ public class CategoryApiFacade {
         }
     }
 
-    public static CategoryDTO createCategoryByRest(CategoryDTO category) {
+    public static CategoryDTO createByRest(CategoryDTO category) {
         Response response = given().contentType(ContentType.JSON)
                 .body(category)
                 .when()
                 .post().then().statusCode(201).extract().response();
-        response.prettyPrint();
+        System.out.println("Category: "+ response.prettyPrint());
         return JsonUtils.fromJson(response.getBody().asString(), CategoryDTO.class);
     }
 }

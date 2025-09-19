@@ -53,7 +53,7 @@ public class CategoryApiTest {
         long currented = System.currentTimeMillis();
         String pName = "Fasntasy " + currented;
         String sName = "Dark Fantasy " + currented;
-        CategoryDTO pCategory = CategoryApiFacade.createCategoryByRest(
+        CategoryDTO pCategory = CategoryApiFacade.createByRest(
                 CategoryDTO
                         .builder()
                         .name(pName)
@@ -108,7 +108,7 @@ public class CategoryApiTest {
     @Test
     public void get() {
         CategoryDTO withRandomName = CategoryFactory.createWithRandomName(null);
-        CategoryDTO categoryByRest = CategoryApiFacade.createCategoryByRest(withRandomName);
+        CategoryDTO categoryByRest = CategoryApiFacade.createByRest(withRandomName);
         System.out.println(categoryByRest.getName());
     }
 }

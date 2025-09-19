@@ -30,7 +30,8 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MemberApiTest {private final List<Long> createdIds = new ArrayList<>();
+public class MemberApiTest {
+    private final List<Long> createdIds = new ArrayList<>();
     private static Long dtoID;
     private static MemberDTO dto;
     @AfterEach
